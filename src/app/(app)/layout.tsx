@@ -1,6 +1,8 @@
 import "~/styles/globals.css";
+
 import { Inter } from "next/font/google";
-import Script from "next/script";
+import { Providers } from "~/components/providers/Providerts";
+import { Toaster } from "sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -19,9 +21,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <Script src="https://cdn.lordicon.com/lordicon.js"></Script>
-      <body className={`font-sans ${inter.variable}` }>{children}</body>
-    </html>
+    <div>
+      <Providers>
+        {children}
+        <Toaster />
+      </Providers>
+    </div>
   );
 }
