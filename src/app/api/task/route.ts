@@ -83,3 +83,25 @@ export async function DELETE(request: NextRequest) {
 
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = await getServerAuthSession();
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ message: "User is not authenticated" });
+    }
+
+    const tasks = await db.task.findMany({
+      where: { userId: session.user.id },
+    });
+
+    return NextResponse.json({ tasks });
+  } catch (error) {
+    console.error("Error while fetching tasks:", error);
+
+    return NextResponse.json({
+      message: "Internal Server Error",
+    });
+  }
+}
