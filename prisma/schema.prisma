@@ -62,6 +62,8 @@ model User {
     accounts      Account[]
     sessions      Session[]
     posts         Post[]
+    tasks         Task[]    // Add this line to connect User with Task
+
 }
 
 model VerificationToken {
@@ -70,4 +72,15 @@ model VerificationToken {
     expires    DateTime
 
     @@unique([identifier, token])
+}
+
+model Task {
+    id          String   @id @default(cuid())
+    userId      String
+    user        User?     @relation(fields: [userId], references: [id])
+    title       String
+    description String
+    status      Int      @default(1) // 1-pending, 2-in-progress, 3-done
+    createdDate DateTime @default(now())
+    updatedDate DateTime @updatedAt
 }
