@@ -22,12 +22,29 @@ function TaskCard({
   const [statusId, setStatusId] = useState(status);
   const [deleteModal, setDeleteModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    updateStatus().catch((err) => {
-      console.error(err);
-    });
+    // Component is mounted
+    setIsMounted(true);
+
+    // Cleanup function to set isMounted to false when the component is unmounted
+    return () => {
+      setIsMounted(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    // Avoid the initial update when the component is mounted
+    if (isMounted) {
+      updateStatus().catch((err) => {
+        console.error(err);
+      });
+    }
   }, [statusId]);
+
+
+
 
   async function updateStatus() {
     try {
