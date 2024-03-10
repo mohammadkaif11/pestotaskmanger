@@ -17,7 +17,6 @@ export default async function HomePage() {
     <main>
       <Navbar />
       <SearchBox />
-      <GetTask/>
     </main>
   );
 }

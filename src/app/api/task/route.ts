@@ -91,11 +91,26 @@ export async function GET(request: NextRequest) {
     if (!session?.user?.id) {
       return NextResponse.json({ message: "User is not authenticated" });
     }
+    const url = new URL(request.url)  
+    const status =url.searchParams.get("status")
+    const title=url.searchParams.get("title")
+  
+    console.log('status', status);
+    console.log('title', title);
 
+
+    // Define the filter object based on provided parameters
+    const filter = {
+      userId: session.user.id,
+      ...(status!==null && parseInt(status) > 0 && parseInt(status) <= 3 && { status: parseInt(status) }),
+      ...(title!==null && title.trim() !== '' && { title: { contains: title } }),
+    };
+    
     const tasks = await db.task.findMany({
-      where: { userId: session.user.id },
+      where: filter,
     });
 
+    console.log(tasks);
     return NextResponse.json({ tasks });
   } catch (error) {
     console.error("Error while fetching tasks:", error);
