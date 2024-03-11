@@ -47,7 +47,7 @@ export const MyContextProvider = ({
 
   const fetchData = async (title: string, statusId: number) => {
     try {
-      const queryString = `?status=${statusId}&title=${title}`;
+      const queryString = `?statusId=${statusId}&title=${title}`;
       setLoader(true);
       const response = await fetch(`/api/task${queryString}`, {
         cache: "no-cache",
