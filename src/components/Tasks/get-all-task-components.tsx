@@ -5,7 +5,7 @@ import TaskCard from "./TaskCard/task-card";
 
 function GetTask({ tasks }: { tasks: Task[]}) {
   return (
-    <div className="grid justify-items-center gap-2 sm:grid-cols-1 md:grid-cols-6  lg:grid-cols-8">
+    <div className="grid justify-items-center gap-2 grid-cols-2 md:grid-cols-6  lg:grid-cols-8 p-4">
       {tasks &&
         tasks.length > 0 &&
         tasks.map((task) => (
