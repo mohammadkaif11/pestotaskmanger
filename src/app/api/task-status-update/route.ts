@@ -16,14 +16,15 @@ export async function PUT(request: NextRequest) {
     const session = await getServerAuthSession();
     const { statusId, id } = (await request.json()) as RequestBody;
     if (!session?.user?.id) {
-      return NextResponse.json({ message: "User is not authenticated" });
+      throw new Error("User is not authenticated")
     }
 
     if (!statusId || !id) {
-      return NextResponse.json({ message: "Status Task is required" });
+      throw new Error("Task Status is required")
+
     }
     if (statusId > 3 || statusId < 1) {
-      return NextResponse.json({ message: "Status is not valid" });
+      throw new Error("Status is not valid")
     }
 
     await db.task.update({
@@ -38,6 +39,6 @@ export async function PUT(request: NextRequest) {
     };
     console.error("Error while updating Task status:", error);
 
-    return NextResponse.json({ message: Error.message });
+    return NextResponse.json({ error: Error.message });
   }
 }

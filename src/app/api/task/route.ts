@@ -7,6 +7,7 @@ interface RequestBody {
   Description: string;
   Id?: string;
 }
+
 interface ErrorInterface {
   message: string;
 }
@@ -16,20 +17,20 @@ export async function POST(request: NextRequest) {
     const session = await getServerAuthSession();
     const { Title, Description } = (await request.json()) as RequestBody;
     if (!session?.user?.id) {
-      return NextResponse.json({ message: "User is not authenticated" });
+      throw new Error("User is not authenticated")
     }
 
     if (!Title || !Description) {
-      return NextResponse.json({ message: "Title,Description is required" });
+      throw new Error("Title,Description is required")
     }
+
     await db.task.create({data: { title: Title, description: Description,userId:session?.user?.id}});
 
     return NextResponse.json({ message: "Successfully created" });
   } catch (error) {
     const Error: ErrorInterface = {message: (error as Error).message || "Internal Server Error"};
     console.error("Error while creating Task:", error);
-
-    return NextResponse.json({ message: Error.message});
+    return NextResponse.json({ error: Error.message});
 
   }
 }
@@ -39,11 +40,11 @@ export async function PUT(request: NextRequest) {
     const session = await getServerAuthSession();
     const { Title, Description,Id } = (await request.json()) as RequestBody;
     if (!session?.user?.id) {
-      return NextResponse.json({ message: "User is not authenticated" });
+      throw new Error("User is not authenticated")
     }
 
     if (!Title || !Description || !Id) {
-      return NextResponse.json({ message: "Title,Description Task is required" });
+      throw new Error("Title,Description Task is required")
     }
     
 
@@ -54,7 +55,7 @@ export async function PUT(request: NextRequest) {
     const Error: ErrorInterface = {message: (error as Error).message || "Internal Server Error"};
     console.error("Error while updating Task:", error);
 
-    return NextResponse.json({ message: Error.message});
+    return NextResponse.json({ error: Error.message});
 
   }
 }
@@ -66,11 +67,12 @@ export async function DELETE(request: NextRequest) {
   const id = url.searchParams.get("id")
 
     if (!session?.user?.id) {
-      return NextResponse.json({ message: "User is not authenticated" });
+      throw new Error("User is not authenticated")
     }
 
     if (!id) {
-      return NextResponse.json({ message: "Id is required" });
+      throw new Error("Task is required")
+
     }
     await db.task.delete({where: { id:id}});
 
@@ -79,7 +81,7 @@ export async function DELETE(request: NextRequest) {
     const Error: ErrorInterface = {message: (error as Error).message || "Internal Server Error"};
     console.error("Error while Deleting Task:", error);
 
-    return NextResponse.json({ message: Error.message});
+    return NextResponse.json({ error: Error.message});
 
   }
 }
@@ -89,17 +91,13 @@ export async function GET(request: NextRequest) {
     const session = await getServerAuthSession();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ message: "User is not authenticated" });
+      throw new Error("User is not authenticated")
     }
+    
     const url = new URL(request.url)  
-    const status =url.searchParams.get("status")
+    const status =url.searchParams.get("statusId")
     const title=url.searchParams.get("title")
-  
-    console.log('status', status);
-    console.log('title', title);
 
-
-    // Define the filter object based on provided parameters
     const filter = {
       userId: session.user.id,
       ...(status!==null && parseInt(status) > 0 && parseInt(status) <= 3 && { status: parseInt(status) }),
@@ -110,13 +108,11 @@ export async function GET(request: NextRequest) {
       where: filter,
     });
 
-    console.log(tasks);
     return NextResponse.json({ tasks });
   } catch (error) {
     console.error("Error while fetching tasks:", error);
-
     return NextResponse.json({
-      message: "Internal Server Error",
+      error: "Internal Server Error",
     });
   }
 }
