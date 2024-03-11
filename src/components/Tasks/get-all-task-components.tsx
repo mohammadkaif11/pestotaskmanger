@@ -3,9 +3,9 @@ import React from "react";
 import { type Task } from "@prisma/client";
 import TaskCard from "./TaskCard/task-card";
 
-function GetTask({ tasks }: { tasks: Task[] }) {
+function GetTask({ tasks }: { tasks: Task[]}) {
   return (
-    <div className=" grid justify-items-center gap-4 sm:grid-cols-1 md:grid-cols-2  lg:grid-cols-3">
+    <div className="grid justify-items-center gap-2 sm:grid-cols-1 md:grid-cols-6  lg:grid-cols-8">
       {tasks &&
         tasks.length > 0 &&
         tasks.map((task) => (

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import DeleteSceneModal from "../delete/delete-scene-modal";
 import EditSceneModal from "../update/update-scene-modal";
+import { useMyContext } from "~/components/Context/MyContext";
 
 interface ResponseType {
   message: string;
@@ -23,6 +24,7 @@ function TaskCard({
   const [deleteModal, setDeleteModal] = useState(false);
   const [updateModal, setUpdateModal] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const { refreshData } = useMyContext();
 
   useEffect(() => {
     // Component is mounted
@@ -43,9 +45,6 @@ function TaskCard({
     }
   }, [statusId]);
 
-
-
-
   async function updateStatus() {
     try {
       const response = await fetch("/api/task-status-update", {
@@ -61,6 +60,9 @@ function TaskCard({
       }
       const jsonResponse = (await response.json()) as ResponseType;
       toast.success(jsonResponse.message);
+      refreshData().catch((error) => {
+        console.error("Error while fetching task", error);
+      });
     } catch (error: unknown) {
       const Error: ResponseType = {
         message: (error as Error).message || "Internal Server Error",

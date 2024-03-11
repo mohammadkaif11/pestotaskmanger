@@ -6,7 +6,8 @@ import { toast } from "sonner";
 import { type ErrorInterface } from "model";
 import { useRouter } from "next/navigation";
 import Loader from "~/components/icons/loader";
-import { ResponseType } from "model";
+import { type ResponseType } from "model";
+import { useMyContext } from "~/components/Context/MyContext";
 
 export default function DeleteSceneModal({
   open,
@@ -19,7 +20,7 @@ export default function DeleteSceneModal({
 }) {
   const id=taskId;
   const [loading, setloading] = useState(false);
-  const router = useRouter();
+  const {refreshData} = useMyContext()
 
   const handleDelete = async () => {
     try {
@@ -41,9 +42,9 @@ export default function DeleteSceneModal({
       }
       const jsonResponse = (await response.json()) as ResponseType;
       toast.success(jsonResponse.message);
-      router.refresh();
-      router.refresh();
-      toast.success("successfully delete task!");
+      refreshData().catch(error => {
+        console.error('Error while fetching task',error)
+      })
     } catch (error: unknown) {
       const Error: ErrorInterface = {
         message: (error as Error).message || "Internal Server Error",

@@ -5,12 +5,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Task } from "@prisma/client";
-import { ResponseType } from "model";
+import { type ResponseType } from "model";
 import Loader from "~/components/icons/loader";
 import { type ErrorInterface } from "model";
-
-import { useRouter } from "next/navigation";
+import { useMyContext } from "~/components/Context/MyContext";
 
 export default function EditSceneModal({
   open,
@@ -29,13 +27,7 @@ export default function EditSceneModal({
   const [loading, setloading] = useState(false);
   const [Title, setTitle] = useState(taskTitle);
   const [Description, setDescription] = useState(taskDescription);
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   setDescription(task.description ?? "");
-  //   setTitle(task.title ?? "");
-  //   setId(task.id ?? "");
-  // }, []);
+  const {refreshData} = useMyContext()
 
   const handleEdit = async () => {
     try {
@@ -56,9 +48,10 @@ export default function EditSceneModal({
       }
       const jsonResponse = (await response.json()) as ResponseType;
       toast.success(jsonResponse.message);
-      router.refresh();
-      router.refresh();
-      toast.success("successfully updated scene!");
+      refreshData().catch(error => {
+        console.error('Error while fetching task',error)
+      })
+
     } catch (error: unknown) {
       const Error: ErrorInterface = {message: (error as Error).message || "Internal Server Error"};
       toast.error(Error.message);

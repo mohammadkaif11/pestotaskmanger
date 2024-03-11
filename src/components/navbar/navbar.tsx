@@ -1,16 +1,12 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
-import { PhotoIcon, CurrencyDollarIcon } from "@heroicons/react/16/solid";
-import {
-  Cog6ToothIcon,
-  ArrowRightEndOnRectangleIcon,
-} from "@heroicons/react/24/solid";
+import { ArrowRightEndOnRectangleIcon } from "@heroicons/react/24/solid";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -21,14 +17,14 @@ export default function Navbar() {
 
   return (
     <>
-      <Disclosure as="nav" className="bg-emerald-200">
+      <Disclosure as="nav" className="border-gray-50 dark:bg-gray-700">
         {({ open }) => (
           <>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
               <div className="relative flex h-16 justify-between">
                 <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
                   {/* Mobile menu button */}
-                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-emerald-500 hover:bg-emerald-100 hover:text-emerald-600 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
+                  <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-900 focus:outline-none  focus:ring-2 focus:ring-inset dark:text-white">
                     <span className="absolute -inset-0.5" />
                     <span className="sr-only">Open main menu</span>
                     {open ? (
@@ -41,7 +37,7 @@ export default function Navbar() {
                 <div className="flex flex-1 items-center justify-center md:justify-between">
                   <div className="flex flex-shrink-0 items-center">
                     <Link href="/">
-                      <h4 className="text-2xl font-bold text-emerald-500">
+                      <h4 className="text-2xl font-bold text-gray-900 dark:text-white">
                         PestoTaskManger
                       </h4>
                     </Link>
@@ -51,7 +47,7 @@ export default function Navbar() {
                   {/* Profile dropdown */}
                   <Menu as="div" className="relative ml-3">
                     <div>
-                      <Menu.Button className="relative flex rounded-full bg-emerald-200 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                      <Menu.Button className="relative flex rounded-full bg-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
                         <span className="absolute -inset-1.5" />
                         <span className="sr-only">Open user menu</span>
                         <img
@@ -73,17 +69,17 @@ export default function Navbar() {
                       leaveFrom="transform opacity-100 scale-100"
                       leaveTo="transform opacity-0 scale-95"
                     >
-                      <Menu.Items className="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-emerald-100 py-1 shadow-lg ring-1 ring-emerald-200 ring-opacity-5 focus:outline-none">
+                      <Menu.Items className="absolute right-0 z-10 mt-2 w-auto origin-top-right rounded-md bg-gray-100 py-1 shadow-lg ring-1 ring-gray-200 ring-opacity-5 focus:outline-none">
                         <Menu.Item>
                           {({ active }) => (
                             <button
                               className={classNames(
                                 active ? "bg-pin-200" : "",
-                                "flex flex-col px-4 py-2 text-sm text-emerald-900",
+                                "flex flex-col px-4 py-2 text-sm text-gray-900",
                               )}
                             >
                               {session?.user?.name}
-                              <span className="text-sm font-bold text-emerald-500">
+                              <span className="text-sm font-bold text-gray-500">
                                 {" "}
                                 {session?.user?.email}
                               </span>
@@ -97,14 +93,14 @@ export default function Navbar() {
                                 void signOut();
                               }}
                               className={classNames(
-                                active ? "bg-emerald-200" : "",
-                                "flex flex-col px-4 py-2 text-sm font-bold text-emerald-500",
+                                active ? "bg-gray-200" : "",
+                                "flex flex-col px-4 py-2 text-sm font-bold text-gray-500",
                               )}
                             >
                               <span className="flex items-center gap-2">
                                 {" "}
                                 Sign out
-                                <ArrowRightEndOnRectangleIcon className="h-6 w-6 text-emerald-600" />
+                                <ArrowRightEndOnRectangleIcon className="h-6 w-6 text-gray-600" />
                               </span>
                             </button>
                           )}

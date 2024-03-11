@@ -5,7 +5,7 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { toast } from "sonner";
 import VoiceLoadSpiner from "../../icons/loader";
-import { useRouter } from "next/navigation";
+import { useMyContext } from "~/components/Context/MyContext";
 
 
 
@@ -23,7 +23,7 @@ function CreateTaskModal({
   const [loading, setloading] = useState(false);
   const [Title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
-  const router = useRouter();
+  const {refreshData}=useMyContext()
 
   async function handleCreate() {
     setloading(true);
@@ -43,12 +43,12 @@ function CreateTaskModal({
         throw new Error("Failed to create task");
       }
       const jsonResponse = (await response.json()) as ResponseType;
+      refreshData().catch(error => {
+        console.error('Error while fetching task',error)
+      })
       toast.success(jsonResponse.message);
-      router.refresh();
     } catch (error: unknown) {
-      const Error: ResponseType = {
-        message: (error as Error).message || "Internal Server Error",
-      };
+      const Error: ResponseType = {message: (error as Error).message || "Internal Server Error",};
       toast.error(Error.message);
       console.error("Error while creating Task:", error);
     } finally {
