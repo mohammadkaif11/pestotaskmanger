@@ -4,14 +4,10 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { toast } from "sonner";
-import VoiceLoadSpiner from "../../icons/loader";
+import Loader from "../../icons/loader";
+import { type ResponseType,type ErrorMessageInterface } from "model";
 import { useMyContext } from "~/components/Context/MyContext";
 
-
-
-interface ResponseType {
-  message: string;
-}
 
 function CreateTaskModal({
   open,
@@ -23,12 +19,12 @@ function CreateTaskModal({
   const [loading, setloading] = useState(false);
   const [Title, setTitle] = useState("");
   const [Description, setDescription] = useState("");
-  const {refreshData}=useMyContext()
+  const { refreshData } = useMyContext();
 
   async function handleCreate() {
     setloading(true);
     try {
-      if (Title === "" || Description === "") {
+      if (Title.trim() === "" || Description.trim() === "") {
         throw new Error("Title and Description cannot be empty");
       }
       const response = await fetch("/api/task", {
@@ -38,17 +34,21 @@ function CreateTaskModal({
         },
         body: JSON.stringify({ Title, Description }),
       });
-
       if (!response.ok) {
-        throw new Error("Failed to create task");
+        throw new Error("Failed to Create task");
       }
       const jsonResponse = (await response.json()) as ResponseType;
-      refreshData().catch(error => {
-        console.error('Error while fetching task',error)
-      })
+      if (jsonResponse.error) {
+        throw new Error(jsonResponse.error);
+      }
+      refreshData().catch((error) => {
+        console.error("Error while fetching task in promise", error);
+      });
       toast.success(jsonResponse.message);
     } catch (error: unknown) {
-      const Error: ResponseType = {message: (error as Error).message || "Internal Server Error",};
+      const Error: ErrorMessageInterface = {
+        message: (error as Error).message || "Internal Server Error",
+      };
       toast.error(Error.message);
       console.error("Error while creating Task:", error);
     } finally {
@@ -139,7 +139,7 @@ function CreateTaskModal({
                     className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
                     onClick={handleCreate}
                   >
-                    {loading ? <VoiceLoadSpiner /> : "Create"}
+                    {loading ? <Loader /> : "Create"}
                   </button>
                 </div>
               </Dialog.Panel>

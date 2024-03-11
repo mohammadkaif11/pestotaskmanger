@@ -4,7 +4,6 @@ import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { toast } from "sonner";
 import { type ErrorInterface } from "model";
-import { useRouter } from "next/navigation";
 import Loader from "~/components/icons/loader";
 import { type ResponseType } from "model";
 import { useMyContext } from "~/components/Context/MyContext";
@@ -18,9 +17,9 @@ export default function DeleteSceneModal({
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
   taskId: string;
 }) {
-  const id=taskId;
+  const id = taskId;
   const [loading, setloading] = useState(false);
-  const {refreshData} = useMyContext()
+  const { refreshData } = useMyContext();
 
   const handleDelete = async () => {
     try {
@@ -38,13 +37,16 @@ export default function DeleteSceneModal({
       });
 
       if (!response.ok) {
-        throw new Error("Failed to Delete task");
+        throw new Error("Failed to delete task");
       }
       const jsonResponse = (await response.json()) as ResponseType;
+      if (jsonResponse.error) {
+        throw new Error(jsonResponse.error);
+      }
       toast.success(jsonResponse.message);
-      refreshData().catch(error => {
-        console.error('Error while fetching task',error)
-      })
+      refreshData().catch((error) => {
+        console.error("Error while fetching task in promise", error);
+      });
     } catch (error: unknown) {
       const Error: ErrorInterface = {
         message: (error as Error).message || "Internal Server Error",

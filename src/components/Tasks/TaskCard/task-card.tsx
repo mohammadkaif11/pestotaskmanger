@@ -4,11 +4,9 @@ import { toast } from "sonner";
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import DeleteSceneModal from "../delete/delete-scene-modal";
 import EditSceneModal from "../update/update-scene-modal";
+import { type ResponseType, type ErrorMessageInterface } from "model";
 import { useMyContext } from "~/components/Context/MyContext";
 
-interface ResponseType {
-  message: string;
-}
 function TaskCard({
   id,
   title,
@@ -27,17 +25,13 @@ function TaskCard({
   const { refreshData } = useMyContext();
 
   useEffect(() => {
-    // Component is mounted
     setIsMounted(true);
-
-    // Cleanup function to set isMounted to false when the component is unmounted
     return () => {
       setIsMounted(false);
     };
   }, []);
 
   useEffect(() => {
-    // Avoid the initial update when the component is mounted
     if (isMounted) {
       updateStatus().catch((err) => {
         console.error(err);
@@ -54,17 +48,19 @@ function TaskCard({
         },
         body: JSON.stringify({ id, statusId }),
       });
-
       if (!response.ok) {
-        throw new Error("Failed to Update Task");
+        throw new Error("Failed to Update task");
       }
       const jsonResponse = (await response.json()) as ResponseType;
+      if (jsonResponse.error) {
+        throw new Error(jsonResponse.error);
+      }
       toast.success(jsonResponse.message);
       refreshData().catch((error) => {
         console.error("Error while fetching task", error);
       });
     } catch (error: unknown) {
-      const Error: ResponseType = {
+      const Error: ErrorMessageInterface = {
         message: (error as Error).message || "Internal Server Error",
       };
       toast.error(Error.message);

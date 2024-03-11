@@ -1,12 +1,12 @@
 "use client";
-import { Task } from "@prisma/client";
+import { type Task } from "@prisma/client";
 import { createContext, useContext, useState } from "react";
 
 interface MyContextProps {
   tasks: Task[];
   refreshData: () => Promise<void>;
   fetchData: (title: string, statusId: number) => Promise<void>;
-  loader:boolean
+  loader: boolean;
 }
 
 interface ResponseType {
@@ -30,7 +30,6 @@ export const MyContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loader, setLoader] = useState<boolean>(false);
 
@@ -42,28 +41,31 @@ export const MyContextProvider = ({
         setTasks(data.tasks);
       }
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error("Error while fetching tasks refreshData():", error);
     }
   };
 
- const fetchData = async (title: string, statusId: number) => {
+  const fetchData = async (title: string, statusId: number) => {
     try {
       const queryString = `?status=${statusId}&title=${title}`;
       setLoader(true);
-      const response = await fetch(`/api/task${queryString}`,{cache:'no-cache'});
+      const response = await fetch(`/api/task${queryString}`, {
+        cache: "no-cache",
+      });
       const data = (await response.json()) as ResponseType;
 
       if (response.ok) {
         setTasks(data.tasks);
       }
     } catch (error) {
-      console.error("Error fetching tasks:", error);
+      console.error("Error while fetching tasks fetchData():", error);
     } finally {
       setLoader(false);
     }
   };
+
   return (
-    <MyContext.Provider value={{ tasks, refreshData ,fetchData,loader}}>
+    <MyContext.Provider value={{ tasks, refreshData, fetchData, loader }}>
       {children}
     </MyContext.Provider>
   );

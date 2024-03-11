@@ -47,9 +47,13 @@ export default function EditSceneModal({
         throw new Error("Failed to Update task");
       }
       const jsonResponse = (await response.json()) as ResponseType;
+      
+      if(jsonResponse.error){
+        throw new Error(jsonResponse.error);
+      }
       toast.success(jsonResponse.message);
       refreshData().catch(error => {
-        console.error('Error while fetching task',error)
+        console.error('Error while fetching task in promise',error)
       })
 
     } catch (error: unknown) {
