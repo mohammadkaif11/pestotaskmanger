@@ -1,29 +1,93 @@
-# Create T3 App
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+# Hi, I'm mohammad kaif! 👋
 
-## What's next? How do I make an app with this?
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+## 🚀 About Me
+I'm a Software Engineer... Here I describe one of my project pestotaskmanger.
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Drizzle](https://orm.drizzle.team)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+# Pestotaskmanger
 
-## Learn More
+PestoTaskManager is a robust task management tool designed to optimize productivity with its user-friendly interface and powerful features. This platform allows users to seamlessly create, delete, update, and manage tasks, adapting to the dynamic nature of projects. The key features include task creation and deletion, real-time task updates, and the ability to change task statuses, ensuring that project information is always current.
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+The tool's advanced filtering system enables users to organize tasks based on their status, enhancing visibility and facilitating better decision-making. Additionally, the powerful search functionality based on task titles simplifies the process of retrieving specific tasks, saving valuable time and effort.
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+To prioritize security, PestoTaskManager integrates authentication and authorization features with Google accounts. This ensures that user data and task details are protected, allowing only authorized individuals access to sensitive information. The combination of efficiency, flexibility, visibility, and security makes PestoTaskManager the ideal solution for effective task management, whether working individually or collaboratively with a team. It provides the functionality needed to stay organized, focused, and in control of your projects.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+Project link
 
-## How do I deploy this?
+```bash
+  https://pestotaskmanger.vercel.app/
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+```
+
+## Features
+
+- Login/Signup With Google.
+- (Create,Update,Delete) task.
+- Update Status of task.
+- Sorting the task with Status.
+- Searching the task with task title.
+
+
+
+
+## Tech Stack
+**Client:** Html,Css,Javascript,Tailwind Framework,Nextjs
+
+**Server:** Nextjs-Server-api,Nodejs
+
+**Programming Language:** Nodejs
+
+**Authentication:** Google OAuth 2.0
+
+**Database:** Postgresql
+
+**Database ORM:** Prisma
+
+**Authentication Library:** Next-Auth
+
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/mohammadkaif11/pestotaskmanger
+
+```
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file
+
+`DATABASE_URL` : Postgresql Database URL is required(Render.com,Neon DB,Supbase)
+
+`NEXTAUTH_URL` : http://localhost:3000 | Production URL
+
+`NEXTAUTH_SECRET` : a3007ac4c051fa9eab0f7b3b6a331506
+
+***Create Google OAuth 2.0 Client IDs for Google Authentication make sure Authorised JavaScript origins and Authorised redirect URIs has added.***
+
+`GOOGLE_CLIENT_ID` 
+ 
+
+`GOOGLE_CLIENT_SECERET`:
+
+
+Install package
+
+```bash
+ npm install
+ npm prisma db push 
+ npm run dev
+```
+Project will run on
+
+```bash
+http://localhost:3000
+```
+Now Enjoy the Project 
+
+
+## 🔗 Links
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/mohammad-kaif-21076b217/)
