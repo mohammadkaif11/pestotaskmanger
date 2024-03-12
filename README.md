@@ -60,13 +60,13 @@ Clone the project
 
 To run this project, you will need to add the following environment variables to your .env file
 
-`DATABASE_URL` : Postgresql Database URL is required(Render.com,Neon DB,Supbase)
+`DATABASE_URL` : Postgresql Database URL is required(Render,Neondb,Supabase)
 
 `NEXTAUTH_URL` : http://localhost:3000 | Production URL
 
 `NEXTAUTH_SECRET` : a3007ac4c051fa9eab0f7b3b6a331506
 
-***Create Google OAuth 2.0 Client IDs for Google Authentication make sure Authorised JavaScript origins and Authorised redirect URIs has added.***
+***Create Google OAuth 2.0 Client IDs for Google Authentication and make sure Authorised JavaScript origins and Authorised redirect URIs has added.***
 
 `GOOGLE_CLIENT_ID` 
  
