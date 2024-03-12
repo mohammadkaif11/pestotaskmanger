@@ -1,6 +1,7 @@
 import LoginButton from "./LoginButton";
 import { Suspense } from "react";
 
+
 export default async function LoginPage() {
   return (
     <div className="mx-5 border border-black  py-10 sm:mx-auto sm:w-full sm:max-w-md sm:rounded-lg sm:shadow-md ">
