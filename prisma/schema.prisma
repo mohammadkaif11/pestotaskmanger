@@ -84,3 +84,19 @@ model Task {
     createdDate DateTime @default(now())
     updatedDate DateTime @updatedAt
 }
+
+model Block {
+  id          Int          @id @default(autoincrement())
+  blockNumber String          @unique
+  timestamp   DateTime
+  transactions Transaction[]
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  txHash      String   
+  blockNumber String
+  txType      String
+  status      String
+  block       Block    @relation(fields: [blockNumber], references: [blockNumber])
+}
